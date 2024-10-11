@@ -1,0 +1,291 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #234;
+    color: rgb(240, 240, 240);
+    font-family: "Tahoma", "Roboto";
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    color: rgb(240, 240, 240);
+}
+
+button {
+    background-color: rgb(63, 93, 124);
+    color: var(--text);
+    outline: none !important;
+    border-style: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgb(62, 100, 138);
+}
+
+button a {
+    text-decoration: none;
+    height: 100%;
+    width: 100%;
+}
+
+:root {
+    --text: rgb(240, 240, 240);
+}
+
+header {
+    background-color: rgb(69, 80, 96);
+    padding: 2rem 0;
+    width: 100vw;
+}
+
+header div {
+    width: 80%;
+    padding: 0 2rem;
+    margin: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: red; */
+}
+
+header div button {
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: all 0.4s ease;
+}
+
+header div div {
+    padding: 1rem 0 1rem 1rem;
+    margin: 0;
+    cursor: pointer;
+    width: max-content;
+    display: flex;
+    gap: 1rem;
+}
+
+.readingListContainer {
+    display: block;
+}
+
+.readingListContainer.hide {
+    display: none;
+}
+
+.readingList {
+    /* padding: .2rem; */
+}
+
+.userOptions .readingListContainer .readingListDrop.show {
+    list-style: none;
+    z-index: 2;
+    background-color: rgb(79, 110, 142);
+    border: 2px solid rgb(140, 197, 253);
+    border-radius: 9px;
+    padding: .4rem 1rem;
+    position: fixed;
+    top: 130px;
+    right: 130px;
+    min-width: 250px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+li.readingListBook {
+    /* padding: 1rem 0.5rem; */
+    background-color: transparent;
+    transition: all 0.2s ease;
+    width: 80%;
+}
+
+li.readingListBook:hover {
+    background-color: rgba(255, 255, 255, .08);
+}
+
+li.readingListBook div.imageAndTitle {
+	display: flex;
+    gap: .1rem;
+}
+
+.imageAndTitle {
+	padding: 0;
+	margin: 0;
+}
+
+.imageAndTitle img {
+	max-width: 60px !important;
+	max-height: 130px !important;
+}
+
+.titleAndText {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.titleAndText .title {
+    font-size: 14px;
+}
+
+.titleAndText .author {
+    font-size: 12px;
+}
+
+div.removeFromReadingList {
+    background-color: transparent;
+    border-radius: 50%;
+    padding: .2rem .5rem;
+}
+
+
+div.removeFromReadingList:hover {
+    background-color: rgba(225, 21, 21, 0.4);
+}
+
+.userOptions .readingListContainer .readingListDrop {
+    display: none;
+}
+
+.searchContainer {
+    width: 90%;
+    padding: 1rem;
+    margin: 0 auto;
+    /* background-color: red; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.searchContainer input {
+    width: 100%;
+    padding: 1rem;
+    background-color: rgb(63, 93, 124);
+    color: var(--text);
+    outline: none !important;
+    border-radius: 8px 0 0 8px;
+    border-style: none;
+}
+
+.searchContainer input::placeholder {
+    color: rgb(200, 200, 200);
+}
+
+.searchContainer button {
+    padding: 1rem;
+    background-color: rgb(63, 93, 124);
+    border-radius: 0 8px 8px 0;
+    border-style: none;
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+
+.searchContainer button:hover {
+    background-color: rgb(62, 100, 138);
+}
+
+ul.bookContainer {
+    list-style: none;
+    margin: 1rem;
+    display: grid;
+    gap: 1rem;
+    /* background-color: rgba(255, 255, 255, .1); */
+    grid-template-rows: auto;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+li.book {
+    display: none;
+}
+
+ul.bookContainer li.book.show {
+    cursor: pointer;
+    height: 300px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    transform: scale(1);
+    display: flex;
+    gap: 0.3rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.4s ease;
+}
+
+ul.bookContainer li.book h3 {
+    text-align: center;
+}
+
+ul.bookContainer li.book:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: scale(1.01);
+}
+
+li.book .book_img {
+    max-width: 70%;
+    max-height: 200px;
+    border-radius: 4px;
+}
+
+li.book h3 {
+    margin-top: 0.3rem;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+li.book p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+li.book div.price {
+    /* position: relative; */
+    bottom: -30px;
+    background-color: red;
+    padding: 1rem;
+    border-radius: 16px;
+}
+
+.clear {
+    display: none;
+    position: relative;
+    right: 2rem;
+    cursor: pointer;
+}
+
+.clear.show {
+    display: block;
+}
+
+.loginBtn {
+    display: block;
+}
+
+.loginBtn.hide {
+    display: none;
+}
+
+.userDisplay {
+    display: block;
+}
+
+.userDisplay.hide {
+    display: none;
+}
+
+select {
+    background-color: #234;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-left: 3rem;
+}

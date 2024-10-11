@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login & Signup - BookShare</title>
+        <link rel="stylesheet" href="login.css" />
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script> -->
+        <!-- <script defer type="module" src="script.js"></script> -->
+    </head>
+    <body>
+        <div class="container">
+            <h2 onclick="getAllUsers()">Login</h2>
+            <form id="loginForm" action="javascript:handleLogin()">
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" required />
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" required />
+                </div>
+                <div class="form-group">
+                    <button type="submit">Login</button>
+                </div>
+            </form>
+
+            <h2>Sign Up</h2>
+            <form id="signupForm" action="javascript:handleSignup()">
+                <div class="form-group">
+                    <label for="signupName">Name:</label>
+                    <input type="text" id="signupName" required />
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email:</label>
+                    <input type="email" id="signupEmail" required />
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password:</label>
+                    <input type="password" id="signupPassword" required />
+                </div>
+                <div class="form-group">
+                    <button type="submit">Sign Up</button>
+                </div>
+            </form>
+        </div>
+    </body>
+    <script>
+        console.log("login.js");
+        let signupEmail = document.querySelector("#signupEmail");
+        let signupName = document.querySelector("#signupName");
+        let signupPassword = document.querySelector("#signupPassword");
+        let loginEmail = document.querySelector("#loginEmail");
+        let loginPassword = document.querySelector("#loginPassword");
+
+        function appendToStorage(name, data) {
+            var old = localStorage.getItem(name);
+            if (old === null) old = "";
+            localStorage.setItem(name, old + "##" + data);
+        }
+
+        function checkForUserPwd(email, pwd) {
+            const jsonText = localStorage.getItem("users");
+            let userList = jsonText.split("#").filter((user) => user);
+            let parsed = [{}];
+            let userPresent = false;
+            let pwdCorrect = false;
+            let guser;
+
+            userList.forEach((userString) => {
+                let obj = {};
+                let user = JSON.parse(userString);
+
+                if (user.email === email) {
+                    userPresent = true;
+                    if (user.pwd === pwd) {
+                        console.log('user matched')
+                        pwdCorrect = true;
+                        localStorage.setItem("loggedinas", JSON.stringify(user));
+                        window.location.href = "index.html"
+                    }
+                }
+            });
+
+            if (userPresent && !pwdCorrect) {
+                alert("Password incorrect.");
+                localStorage.setItem("loggedinas", null);
+            } else if (!userPresent) {
+                alert("No user found");
+                localStorage.setItem("loggedinas", null);
+            }
+
+            console.log(userList);
+        }
+
+        function handleSignup() {
+            console.log("signing up");
+            const name = signupName.value;
+            const email = signupEmail.value;
+            const pwd = signupPassword.value;
+
+            appendToStorage(
+                "users",
+                JSON.stringify({ name: name, email: email, pwd: pwd })
+            );
+            alert("User signed up.")
+        }
+        function handleLogin() {
+            // const name = loginName.value;
+            const email = loginEmail.value;
+            const pwd = loginPassword.value;
+
+            console.log("loggin in");
+            checkForUserPwd(email, pwd);
+        }
+    </script>
+</html>

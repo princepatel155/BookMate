@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" type="text/css" href="./style.css" />
+        <script src="books.js"></script>
+        <title>BookShare</title>
+        <script></script>
+    </head>
+    <body>
+        <div class="main">
+            <header>
+                <div>
+                    <h2>BookMate</h2>
+
+                    <div class="userOptions">
+                        <div class="readingListContainer" title="View reading list">
+                            <button
+                                class="readingList"
+                                onclick="toggleReadList()"
+                            >
+                                ##
+                            </button>
+                            <ul class="readingListDrop"></ul>
+                        </div>
+
+                        <button class="userDisplay"></button>
+                        <button class="loginBtn">
+                            <a href="login.html">Login / Signup</a>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="searchContainer">
+                <input
+                    type="text"
+                    class="searchBar"
+                    placeholder="Enter a book name..."
+                    oninput="handleChange(this.value)"
+                />
+                <span class="clear" onclick="clearSearch()">X</span>
+                <button onclick="handleSearch()">Search</button>
+            </div>
+
+            <div class="tagSelect">
+                <select onchange="handleCategory(this)">
+                    <option value="all">All</option>
+                    <option value="biography">Biographies</option>
+                    <option value="life">Life</option>
+                    <option value="motivation">Motivational</option>
+                    <option value="novel">Novels</option>
+                    <option value="knowledge">Knowledge</option>
+                    <option value="religion">Religion</option>
+                </select>
+            </div>
+
+            <!-- Recently added books: -->
+            <ul class="bookContainer"></ul>
+        </div>
+    </body>
+
+    <script type="text/javascript">
+        console.log("Script started.");
+
+        const loginButton = document.querySelector(".loginBtn");
+        const userDisplay = document.querySelector(".userDisplay");
+        const readList = document.querySelector(".readingListContainer");
+        const readingListDrop = document.querySelector(".readingListDrop");
+        const clearBtn = document.querySelector(".clear");
+        const searchInput = document.querySelector(".searchBar");
+        const categorySelector = document.querySelector(".tagSelect select");
+
+        // const readingListOpen = false;
+
+        function checkForUserinLocal() {
+            let user = localStorage.getItem("loggedinas");
+            if (!user) {
+                console.log("no user found.");
+                userDisplay.classList.add("hide");
+                loginButton.classList.remove("hide");
+                readList.classList.add("hide");
+            } else if (JSON.parse(user).pwd) {
+                console.log("user found");
+                userDisplay.innerHTML = "Logout from " + JSON.parse(user).name;
+                userDisplay.setAttribute("onclick", "logout()");
+                loginButton.classList.add("hide");
+                userDisplay.classList.remove("hide");
+                readList.classList.remove("hide");
+            }
+        }
+        checkForUserinLocal();
+
+        function clearSearch() {
+            searchInput.value = "";
+            handleSearch();
+        }
+
+        function toggleReadList() {
+            if (readingListDrop.classList.contains("show")) {
+                readingListDrop.classList.remove("show");
+            } else {
+                readingListDrop.classList.add("show");
+            }
+        }
+
+        function handleCategory(select) {
+            handleSearch();
+        }
+
+        function handleChange(value) {
+            if (value) {
+                if (!clearBtn.classList.contains("show")) {
+                    clearBtn.classList.add("show");
+                    console.log("showing");
+                }
+            } else {
+                clearBtn.classList.remove("show");
+                console.log("not showing");
+            }
+        }
+
+        function handleSearch() {
+            let query = searchInput.value;
+            let category = categorySelector.selectedOptions[0].value;
+
+
+            let filtered = allLis.forEach((li, index) => {
+                if (li.getAttribute("n").includes(query.toLowerCase())) {
+                    // console.log(li.getAttribute("c").includes(category));
+                    if (category !== "all") {
+                        // console.log("Category is specific");
+                        if (li.getAttribute("c").includes(category)) {
+                            // console.log(
+                            //     `${li.getAttribute("n")} contains ${category}`
+                            // );
+                            if (!li.classList.contains("show")) {
+                                li.classList.add("show");
+                            }
+                        } else {
+                            if (li.classList.contains("show")) {
+                                li.classList.remove("show");
+                            }
+                        }
+                    } else {
+                        // console.log("Category is not specific");
+                        // console.log(
+                        //     `${li.getAttribute("n")} contains ${category}`
+                        // );
+                        li.classList.add("show");
+                    }
+                } else {
+                    if (li.classList.contains("show")) {
+                        li.classList.remove("show");
+                    }
+                }
+                return;
+            });
+        }
+
+        function logout() {
+            localStorage.removeItem("loggedinas");
+            localStorage.removeItem("readlist");
+            checkForUserinLocal();
+        }
+
+        let allLis = [];
+
+        let bookContainer = document.querySelector(".bookContainer");
+        let liContent = "";
+        for (index in books) {
+            let li = document.createElement("li");
+            li.setAttribute("class", `book book${index} show`);
+            li.setAttribute("n", books[index].name.toLowerCase());
+            li.setAttribute("c", books[index].tags);
+            li.setAttribute(
+                "onclick",
+                // `window.open('bookinfo.html?bookid=${index}', '__blank')`
+                `window.open('bookinfo.html?bookid=${index}', '_self')`
+            );
+            liContent = `<img class='book_img' src='${books[index].image}' /> <h3>${books[index].name}</h3> <p>${books[index].author}</p>`;
+            li.innerHTML = liContent;
+            bookContainer.appendChild(li);
+            allLis.push(li);
+        }
+
+        function getReadingList() {
+            let booksInReadingList = localStorage.getItem("readlist");
+            if (booksInReadingList) {
+                booksInReadingList = booksInReadingList.split("##");
+
+                booksInReadingList = booksInReadingList.filter((item) => item);
+                booksInReadingList = booksInReadingList.map((item) => {
+                    return JSON.parse(item);
+                });
+            }
+            else {
+                return []
+            }
+            
+            console.log(booksInReadingList);
+            return booksInReadingList;
+        }
+
+        function removeBookAndSetLocalStorage(e, index) {
+            console.log(index);
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            let books = getReadingList();
+            books.splice(index, 1);
+            console.log(books);
+            bookString = [];
+            for (index in books) {
+                bookString.push(JSON.stringify(books[index]));
+            }
+            bookString = bookString.join("##");
+            localStorage.setItem("readlist", bookString);
+            document
+                .getElementsByClassName(`readingListBook ${index}`)[0]
+                .remove();
+        }
+
+        function getAndSetReadingList() {
+            readingListBookUL = document.querySelector(".readingListDrop");
+
+            let booksInReadingList = getReadingList();
+
+            if (!(booksInReadingList.length > 0)) {
+                let li = document.createElement("li");
+                li.setAttribute("class", 'readingListBook');
+                li.setAttribute("title", '');
+                liContent = `<div class="imageAndTitle">
+                                        <div class="titleAndText">
+                                            <span class='title'>Empty!</span>
+                                            <span class='author'>You haven't added any books yet!</span>
+                                        </div>
+                                    </div>`;
+                li.innerHTML = liContent;
+                readingListBookUL.appendChild(li);
+            }
+
+            for (index in booksInReadingList) {
+                let li = document.createElement("li");
+                li.setAttribute("class", `readingListBook ${index}`);
+                li.setAttribute(
+                    "onclick",
+                    `window.open('bookinfo.html?bookid=${booksInReadingList[index].gindex}', '__blank')`
+                );
+                liContent = `<div class="imageAndTitle">
+                                        <img src="${booksInReadingList[index].image}" alt="${booksInReadingList[index].name}">
+                                        <div class="titleAndText">
+                                            <span class='title'>${booksInReadingList[index].name}</span>
+                                            <span class='author'>by ${booksInReadingList[index].author}</span>
+                                        </div>
+                                        <div class='removeFromReadingList' onclick='removeBookAndSetLocalStorage(event, ${index})'>
+                                            x
+                                        </div>
+                                    </div>`;
+                li.innerHTML = liContent;
+                readingListBookUL.appendChild(li);
+            }
+        }
+
+        getAndSetReadingList();
+    </script>
+</html>

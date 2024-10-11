@@ -1,0 +1,96 @@
+body {
+	background-color: #234;
+	color: rgb(240, 240, 240);
+	font-family: "Tahoma", "Roboto";
+}
+
+button {
+	background-color: rgb(63, 93, 124);
+	color: var(--text);
+	outline: none !important;
+	border-style: none;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: rgb(62, 100, 138);
+}
+
+button a {
+	text-decoration: none;
+	height: 100%;
+	width: 100%;
+}
+
+:root {
+	--text: rgb(240, 240, 240);
+}
+
+.idInfo {
+    font-weight: 600;
+    width: max-content;
+    margin: 0 auto;
+}
+
+.bookInfo {
+    /* background-color: red; */
+    margin: 0 auto;
+    width: 99%;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.bookDet {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bookInfo img {
+    margin-top: 3rem;
+    max-width: 70%;
+	max-height: 300px;
+	border-radius: 4px;
+    margin-bottom: 2rem;
+}
+
+.bookTitle {
+    font-weight: 600;
+    font-size: 22px;
+}
+
+.bookAuthor {
+    margin-bottom: .8rem;
+}
+
+.bookTags {
+    font-style: italic;
+}
+
+.addToReadList {
+    padding: 1rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+}
+
+.back {
+    background-color: rgba(255,255,255, .3);
+    max-width: max-content;
+    padding: 1rem;
+    border: 2px solid;
+    border-color: transparent rgba(255,255,255,.4) rgba(255,255,255,.4) transparent;
+    border-radius: 0 0 12px 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    transition: all .1s ease;
+}
+
+.back:hover, .back:focus {
+    background-color: rgba(255,255,255, .35);
+}

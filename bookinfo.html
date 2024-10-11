@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="bookinfo.css" />
+        <script src="books.js"></script>
+        <title>View Book - BookShare</title>
+    </head>
+    <body>
+        <!-- <div class="back" onclick="window.open('/index.html')"><</div> -->
+        <div class="idInfo">viewing</div>
+
+        <div class="bookInfo">
+            <img alt="book cover" class="bookImage" />
+            <div class="bookDet">
+                <div class="bookTitle"></div>
+                <div class="bookAuthor"></div>
+                <div class="bookPrice"></div>
+                <div class="bookContact"></div>
+                <br />
+                <div class="tags">Category: <span class="bookTags"></span></div>
+                <button class="addToReadList" onclick="addBookToReadList()">
+                    Add to Read List
+                </button>
+            </div>
+        </div>
+    </body>
+    <script>
+        const idInfo = document.querySelector(".idInfo");
+        const bookInfo = document.querySelector(".bookInfo");
+        const bookImage = document.querySelector(".bookImage");
+        const bookTitle = document.querySelector(".bookTitle");
+        const bookAuthor = document.querySelector(".bookAuthor");
+        const bookPrice = document.querySelector(".bookPrice");
+        const bookContact = document.querySelector(".bookContact");
+        const bookTags = document.querySelector(".bookTags");
+
+        addBookBtn = document.querySelector(".addToReadList");
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookId = urlParams.get("bookid");
+
+        if (bookId) {
+            let book = books[bookId];
+            idInfo.innerHTML = `viewing book ${book.name}`;
+            bookImage.setAttribute("src", book.image);
+            bookTitle.innerHTML = book.name;
+            bookAuthor.innerHTML = "By " + book.author;
+            bookPrice.innerHTML = "Price: " + book.price;
+            bookContact.innerHTML = book.contact;
+            bookTags.innerHTML = book.tags
+                .map((value, index) => {
+                    return (
+                        value.slice(0, 1).toUpperCase() +
+                        value.slice(1, value.length)
+                    );
+                })
+                .join(", ");
+        } else {
+            idInfo.innerHTML = `No book ID provided.`;
+            bookInfo.remove();
+        }
+
+        function addBookToReadList() {
+            readlist = localStorage.getItem("readlist") || "";
+            let bookToAdd = books[bookId];
+            bookToAdd.gindex = bookId;
+            readlist = readlist + "##" + JSON.stringify(books[bookId]);
+            localStorage.setItem("readlist", readlist);
+            addBookBtn.innerHTML = "Added to Reading List";
+        }
+
+        function checkForBookInReadingList() {
+            readingList = localStorage.getItem("readlist");
+            if (readingList) {
+                readingList = readingList.split("##");
+                let parsedList = readingList;
+
+                parsedList = parsedList.filter((item) => item);
+                parsedList.forEach((item) => {
+                    console.log(JSON.parse(item).name)
+                    if (
+                        JSON.parse(item).name == books[bookId].name &&
+                        JSON.parse(item).author == books[bookId].author
+                    ) {
+                        addBookBtn.innerHTML = "Remove from Reading List";
+                        return;
+                    }
+                });
+            }
+        }
+
+        checkForBookInReadingList();
+    </script>
+</html>
